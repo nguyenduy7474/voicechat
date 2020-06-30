@@ -24,7 +24,12 @@
   <script>
     //var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
     //console.log(getUserMedia);
-
+    var objectpeer = {
+        host: 'voicechatduy.herokuapp.com',
+        port: 9000,
+        path: '/voicechat'
+      }
+      
     var getUserMedia = (function () {
       if (navigator.getUserMedia) {
         return navigator.getUserMedia.bind(navigator)
@@ -50,11 +55,7 @@
     function call() {
       var person_to_call = document.getElementById('callings').value;
       console.log('WE IS CALLINNNN BRO ' + person_to_call);
-      var peer = new Peer({
-        host: 'localhost',
-        port: 9000,
-        path: '/voicechat'
-      });
+      var peer = new Peer(objectpeer);
       getUserMedia({
         video: false,
         audio: true
@@ -72,11 +73,7 @@
     }
 
     function answerer() {
-        var peer = new Peer({
-        host: 'localhost',
-        port: 9000,
-        path: '/voicechat'
-      });
+        var peer = new Peer(objectpeer);
       peer.on('open', (id) => {
         document.getElementById('peerid').innerHTML = id;
       });
