@@ -24,13 +24,13 @@
   <script>
     //var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
     //console.log(getUserMedia);
-    var objectpeer = {
+/*    var objectpeer = {
         key: 'peerjs',
         host: 'voicechatserver9000.herokuapp.com',
         secure: true,
         port: 443,
         path: '/peerjs/voicechat'
-      }
+      }*/
 
     var getUserMedia = (function () {
       if (navigator.getUserMedia) {
@@ -57,7 +57,7 @@
     function call() {
       var person_to_call = document.getElementById('callings').value;
       console.log('WE IS CALLINNNN BRO ' + person_to_call);
-      var peer = new Peer(objectpeer);
+      var peer = new Peer();
       getUserMedia({
         video: false,
         audio: true
@@ -75,7 +75,7 @@
     }
 
     function answerer() {
-        var peer = new Peer(objectpeer);
+        var peer = new Peer();
       peer.on('open', (id) => {
         document.getElementById('peerid').innerHTML = id;
       });
