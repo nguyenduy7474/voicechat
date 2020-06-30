@@ -1,0 +1,104 @@
+
+<html>
+
+<head>
+  <title>VoiceApp is phone calls for your web browser</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="sick-styling.css">
+</head>
+
+<body>
+  <div class="container">
+    <input type="text" id="callings"></input>
+    <button class="button-call" onclick="call()">Call</button>
+    <audio controls></audio>
+    <div class="answerer-code">
+      <button class="button-answ" onclick="answerer()">Answerer</button>
+      <div id="peerid"></div>
+    </div>
+    <div class="bottom-space"></div>
+  </div>
+  <script src="https://unpkg.com/peerjs@1.0.0/dist/peerjs.min.js"></script>
+  <script>
+    //var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+    //console.log(getUserMedia);
+
+    var getUserMedia = (function () {
+      if (navigator.getUserMedia) {
+        return navigator.getUserMedia.bind(navigator)
+      }
+      if (navigator.webkitGetUserMedia) {
+        return navigator.webkitGetUserMedia.bind(navigator)
+      }
+      if (navigator.mozGetUserMedia) {
+        return navigator.mozGetUserMedia.bind(navigator)
+      }
+    })();
+
+    function onReceiveStream(stream) {
+      var audio = document.querySelector('audio');
+      console.log(audio);
+      audio.srcObject = stream;
+      audio.onloadedmetadata = function (e) {
+        console.log('now playing the audio');
+        audio.play();
+      }
+    }
+
+    function call() {
+      var person_to_call = document.getElementById('callings').value;
+      console.log('WE IS CALLINNNN BRO ' + person_to_call);
+      var peer = new Peer({
+        host: 'localhost',
+        port: 9000,
+        path: '/voicechat'
+      });
+      getUserMedia({
+        video: false,
+        audio: true
+      }, function (stream) {
+        var call = peer.call(person_to_call, stream);
+        call.on('stream', function (remoteStream) {
+          console.log(remoteStream);
+          onReceiveStream(remoteStream);
+          // Show stream in some video/canvas element.
+        });
+      }, function (err) {
+        console.log('Failed to get local stream', err);
+      });
+
+    }
+
+    function answerer() {
+        var peer = new Peer({
+        host: 'localhost',
+        port: 9000,
+        path: '/voicechat'
+      });
+      peer.on('open', (id) => {
+        document.getElementById('peerid').innerHTML = id;
+      });
+      peer.on('call', function (call) {
+        getUserMedia({
+          video: false,
+          audio: true
+        }, function (stream) {
+          console.log("WE IS GETTIN CALLEDDDD");
+          call.answer(stream); // Answer the call with an A/V stream.
+          call.on('stream', function (remoteStream) {
+            console.log(remoteStream);
+            onReceiveStream(remoteStream);
+            // Show stream in some video/canvas element.
+          });
+        }, function (err) {
+          console.log('Failed to get local stream', err);
+        });
+      });
+    }
+  </script>
+
+</body>
+
+</html>
