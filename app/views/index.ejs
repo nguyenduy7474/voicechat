@@ -25,9 +25,11 @@
     //var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
     //console.log(getUserMedia);
     var objectpeer = {
+        key: 'peerjs',
         host: 'voicechatserver9000.herokuapp.com',
-        port: 9000,
-        path: '/voicechat'
+        secure: true,
+        port: 443,
+        path: '/peerjs/voicechat'
       }
 
     var getUserMedia = (function () {
