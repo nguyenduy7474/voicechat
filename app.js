@@ -4,14 +4,17 @@ var app = express();
 var constants = require('constants');
 var constant = require('./config/constants');
 const { ExpressPeerServer } = require('peer');
+const http = require('http');
 
-const server = app.listen(9000);
-
+const server = http.createServer(app);
 const peerServer = ExpressPeerServer(server, {
+  debug: true,
   path: '/voicechat'
 });
 
 app.use('/peerjs', peerServer);
+
+server.listen(9000);
 
 var port = process.env.PORT || 3000;
 var mongoose = require('mongoose');
