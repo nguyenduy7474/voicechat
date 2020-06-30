@@ -6,6 +6,7 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "peer": "0.5.3",
     "async": "latest",
     "basic-auth-connect": "latest",
     "bcrypt-nodejs": "0.0.3",
@@ -35,12 +36,12 @@
     "numeral": "latest",
     "passport": "latest",
     "passport-local": "latest",
-    "peer": "^0.5.3",
     "pm2": "latest",
     "request": "latest",
     "serve-favicon": "^2.5.0",
     "simple-encryptor": "latest",
     "simple-peer": "^9.5.0",
+    "socket.io": "^2.2.0",
     "uid": "0.0.2",
     "underscore": "latest"
   }
